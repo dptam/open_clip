@@ -268,7 +268,7 @@ class MultiheadAttention(Module):
             target_type=query.dtype,
             check_other=False,
         )
-
+        print("A")
         if not is_batched:
             why_not_fast_path = (
                 f"input not batched; expected query.dim() of 3 but got {query.dim()}"

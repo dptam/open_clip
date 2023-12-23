@@ -181,6 +181,7 @@ class AttentionalPooler(nn.Module):
     ):
         super().__init__()
         self.query = nn.Parameter(torch.randn(n_queries, d_model))
+        print("Attention Pooler")
         self.attn = MultiheadAttention(
             d_model, n_head, kdim=context_dim, vdim=context_dim
         )

@@ -8,7 +8,7 @@ from torch import Tensor
 from torch.nn.init import constant_, xavier_normal_, xavier_uniform_
 from torch.nn.modules.linear import NonDynamicallyQuantizableLinear
 from torch.nn.modules.module import Module
-from torch.nn.overrides import (
+from torch.nn.modules.overrides import (
     handle_torch_function,
     has_torch_function,
     has_torch_function_unary,

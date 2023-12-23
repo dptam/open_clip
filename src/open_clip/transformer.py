@@ -461,7 +461,7 @@ class VisionTransformer(nn.Module):
 
         if attentional_pool:
             if isinstance(attentional_pool, str):
-                print("Attnetion Pooler")
+                print("A")
                 self.attn_pool_type = attentional_pool
                 self.pool_type = "none"
                 if attentional_pool in ("parallel", "cascade"):
@@ -480,7 +480,7 @@ class VisionTransformer(nn.Module):
                 else:
                     assert False
             else:
-                print("Attnetion Pooler")
+                print("B")
                 self.attn_pool_type = ""
                 self.pool_type = pool_type
                 self.attn_pool = AttentionalPooler(
@@ -492,7 +492,7 @@ class VisionTransformer(nn.Module):
                 self.attn_pool_contrastive = None
             pool_dim = output_dim
         else:
-            print("Attnetion Pooler")
+            print("C")
 
             self.attn_pool = None
             pool_dim = width

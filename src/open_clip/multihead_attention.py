@@ -1,4 +1,4 @@
-from torch.nn.modules.activations import *
+from torch.nn.modules.activation import *
 
 
 class MultiheadAttention(Module):

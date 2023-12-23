@@ -417,8 +417,9 @@ class MultiheadAttention(Module):
                 self.bias_v,
                 self.add_zero_attn,
                 self.dropout,
-                self.out_proj.weight,
-                self.out_proj.bias,
+                self.out_proj,
+                # self.out_proj.weight,
+                # self.out_proj.bias,
                 training=self.training,
                 key_padding_mask=key_padding_mask,
                 need_weights=need_weights,
@@ -493,8 +494,9 @@ def multi_head_attention_forward(
     bias_v: Optional[Tensor],
     add_zero_attn: bool,
     dropout_p: float,
-    out_proj_weight: Tensor,
-    out_proj_bias: Optional[Tensor],
+    out_proj,
+    # out_proj_weight: Tensor,
+    # out_proj_bias: Optional[Tensor],
     training: bool = True,
     key_padding_mask: Optional[Tensor] = None,
     need_weights: bool = True,
@@ -585,7 +587,6 @@ def multi_head_attention_forward(
           :math:`S` is the source sequence length. If ``average_attn_weights=False``, returns attention weights per
           head of shape :math:`(num_heads, L, S)` when input is unbatched or :math:`(N, num_heads, L, S)`.
     """
-    print("self forward")
     tens_ops = (
         query,
         key,
@@ -901,7 +902,7 @@ def multi_head_attention_forward(
             attn_output.permute(2, 0, 1, 3).contiguous().view(bsz * tgt_len, embed_dim)
         )
 
-        attn_output = F.linear(attn_output, out_proj_weight, out_proj_bias)
+        attn_output = out_proj(attn_output)
         attn_output = attn_output.view(tgt_len, bsz, attn_output.size(1))
         if not is_batched:
             # squeeze the output if input was unbatched

@@ -181,7 +181,6 @@ class AttentionalPooler(nn.Module):
     ):
         super().__init__()
         self.query = nn.Parameter(torch.randn(n_queries, d_model))
-        print("Attention Pooler")
         self.attn = MultiheadAttention(
             d_model, n_head, kdim=context_dim, vdim=context_dim
         )
@@ -210,7 +209,7 @@ class ResidualAttentionBlock(nn.Module):
         super().__init__()
 
         self.ln_1 = norm_layer(d_model)
-        self.attn = nn.MultiheadAttention(d_model, n_head)
+        self.attn = MultiheadAttention(d_model, n_head)
         self.ls_1 = (
             LayerScale(d_model, ls_init_value)
             if ls_init_value is not None
@@ -400,7 +399,6 @@ class VisionTransformer(nn.Module):
     ):
         super().__init__()
         assert pool_type in ("tok", "avg", "none")
-        print("Vision Transformer")
         self.output_tokens = output_tokens
         image_height, image_width = self.image_size = to_2tuple(image_size)
         patch_height, patch_width = self.patch_size = to_2tuple(patch_size)
@@ -461,7 +459,6 @@ class VisionTransformer(nn.Module):
 
         if attentional_pool:
             if isinstance(attentional_pool, str):
-                print("A")
                 self.attn_pool_type = attentional_pool
                 self.pool_type = "none"
                 if attentional_pool in ("parallel", "cascade"):
@@ -480,7 +477,6 @@ class VisionTransformer(nn.Module):
                 else:
                     assert False
             else:
-                print("B")
                 self.attn_pool_type = ""
                 self.pool_type = pool_type
                 self.attn_pool = AttentionalPooler(
@@ -492,8 +488,6 @@ class VisionTransformer(nn.Module):
                 self.attn_pool_contrastive = None
             pool_dim = output_dim
         else:
-            print("C")
-
             self.attn_pool = None
             pool_dim = width
             self.pool_type = pool_type

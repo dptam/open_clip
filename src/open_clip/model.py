@@ -131,7 +131,6 @@ def _build_vision_tower(
     act_layer = QuickGELU if quick_gelu else nn.GELU
 
     if vision_cfg.timm_model_name:
-        print("A")
         visual = TimmModel(
             vision_cfg.timm_model_name,
             pretrained=vision_cfg.timm_model_pretrained,
@@ -147,7 +146,6 @@ def _build_vision_tower(
             image_size=vision_cfg.image_size,
         )
     elif isinstance(vision_cfg.layers, (tuple, list)):
-        print("B")
         vision_heads = vision_cfg.width * 32 // vision_cfg.head_width
         visual = ModifiedResNet(
             layers=vision_cfg.layers,
@@ -157,7 +155,6 @@ def _build_vision_tower(
             width=vision_cfg.width,
         )
     else:
-        print("C")
         vision_heads = vision_cfg.width // vision_cfg.head_width
         norm_layer = (
             LayerNormFp32

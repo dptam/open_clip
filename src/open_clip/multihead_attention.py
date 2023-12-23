@@ -418,8 +418,8 @@ class MultiheadAttention(Module):
                 self.add_zero_attn,
                 self.dropout,
                 self.out_proj,
-                # self.out_proj.weight,
-                # self.out_proj.bias,
+                self.out_proj.weight,
+                self.out_proj.bias,
                 training=self.training,
                 key_padding_mask=key_padding_mask,
                 need_weights=need_weights,
@@ -495,8 +495,8 @@ def multi_head_attention_forward(
     add_zero_attn: bool,
     dropout_p: float,
     out_proj,
-    # out_proj_weight: Tensor,
-    # out_proj_bias: Optional[Tensor],
+    out_proj_weight: Tensor,
+    out_proj_bias: Optional[Tensor],
     training: bool = True,
     key_padding_mask: Optional[Tensor] = None,
     need_weights: bool = True,
@@ -903,6 +903,7 @@ def multi_head_attention_forward(
         )
 
         attn_output = out_proj(attn_output)
+        # attn_output = F.linear(attn_output, out_proj_weight, out_proj_bias)
         attn_output = attn_output.view(tgt_len, bsz, attn_output.size(1))
         if not is_batched:
             # squeeze the output if input was unbatched
